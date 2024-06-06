@@ -16,6 +16,7 @@ Copiar y Pegar el archivo ".env.example", renombrar la copia a ".env", configura
 Cambiar la URL a una personalizada de laragon "{app}.test" o utilizar Localhost, 127.0.0.1, http://localhost.
 ***
 ### PASO 4 Correr las Dependencias.
+
 Abrir la carpeta de la aplicación con la terminal de Laragon, correr los siguientes comandos: 
 ***
 	```
@@ -32,5 +33,15 @@ La semilla "--seed" generará el siguiente **(y único)** usuario administrador.
 	-Usuario: javierparra@gmail.com
  ***
 	-Contraseña: root
+
+
+#### AVISO IMPORTANTE.
+  Para el correcto funcionamiento de los Reportes de PDF y Excel, luego de ejecutar el --seed, ir a la base de datos, tabla ('years') y cambiar los posibles años que generó el seeder, mediante el siguiente formato:
+
+## ID: 1, year: Primero, created_at:(CualesQuiera), updated_at:(CualesQuiera)
+## ID: 2, year: Segundo, created_at:(CualesQuiera), updated_at:(CualesQuiera)
+## ID: 3, year: Tercero, created_at:(CualesQuiera), updated_at:(CualesQuiera)
+
+  De lo contrario, se repetirán los años en las opciones de selección y habrá confusiones y errores.
 	
 

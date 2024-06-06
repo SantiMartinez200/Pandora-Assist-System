@@ -63,7 +63,7 @@ Route::middleware('auth')->group(function () {
   Route::get('pdf/pdf{request}', [PdfController::class,'pdfAssistGeneral'])->name('pdfAssistGeneral');
   Route::get('excel/excel{request}', [ExcelController::class, 'excelAssistGeneral'])->name('excelAssistGeneral');
 
-    Route::get('logs', [LogingController::class,'getLogs'])->middleware('verifyPermission')->name('logs');
+  Route::get('logs', [LogingController::class,'getLogs'])->middleware('verifyPermission')->name('logs');
 
   // Route::get('test/{id}', [StudentController::class, 'test']);
 });
