@@ -1,5 +1,12 @@
 Instalación de la Aplicación Web.
 
+# Headline H1
+## Headline H2
+### Headline H3
+#### Headline H4 
+##### Headline H5
+###### Headline H6
+
 ###PASO 1
 Instalar Laragon completo, la versión de PHP debe ser 8.1.10.
 Laragon dispone de un host local y de un un gestor de bases de datos, llamado HeidiSQL.
