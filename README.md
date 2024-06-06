@@ -8,7 +8,7 @@ Instalar NODEjs.
 Instalar composer en Laragon -> Bin -> Php
 ***
 ### PASO 2 Clonar
-Bajar el archivo .zip  o clonar el repositorio desde Github.
+Bajar el archivo .zip  o clonar este repositorio.
 ***
 ### PASO 3 Archivos de Configuracion & URL.
 Copiar y Pegar el archivo ".env.example", renombrar la copia a ".env", configurar credenciales de BD 
