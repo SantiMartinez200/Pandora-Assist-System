@@ -36,7 +36,7 @@ La semilla "--seed" generará el siguiente **(y único)** usuario administrador.
 
 
 #### AVISO IMPORTANTE.
-  Para el correcto funcionamiento de los Reportes de PDF y Excel, luego de ejecutar el --seed, ir a la base de datos, tabla ('years') y cambiar los posibles años que generó el seeder, mediante el siguiente formato:
+  Para el correcto funcionamiento de los Reportes de PDF / Excel y el filtrado de alumnos para la carga de asistencias, luego de ejecutar el --seed, ir a la base de datos, tabla ('years') y cambiar los posibles años que generó el seeder, mediante el siguiente formato:
 
 ## ID: 1, year: Primero, created_at:(CualesQuiera), updated_at:(CualesQuiera)
 ## ID: 2, year: Segundo, created_at:(CualesQuiera), updated_at:(CualesQuiera)
