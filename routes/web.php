@@ -65,7 +65,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('logs', [LogingController::class,'getLogs'])->middleware('verifyPermission')->name('logs');
 
-
+  // Route::get('test/{id}', [StudentController::class, 'test']);
 });
 
 require __DIR__.'/auth.php';

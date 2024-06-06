@@ -219,6 +219,33 @@ class StudentController extends Controller
       'years' => $years,
       'selectedYear' => $selectedYear
     ]);
-
   }
+
+  //  public function test($id){
+  //   $all = Student::all();
+  //   $idStudent = [];
+  //   foreach ($all as $each) {
+  //     $idStudent[] = $each->id;
+  //   }
+  //   $allStudentsWithAssists = [];
+  //   for ($i = 0; $i < count($idStudent); $i++) {
+  //     $student = Student::with(['assists', 'year'])->findOrFail($idStudent[($i)]);
+  //     $allStudentsWithAssists[$i] = $student;
+  //   }
+  //   $array = [];
+  //   foreach ($allStudentsWithAssists as $eachStudent) {
+  //     $vars = ["student" => [$eachStudent->dni_student, $eachStudent->name, $eachStudent->last_name], "assists" => $eachStudent->assists, "assist_count" => count($eachStudent->assists),"year" => $eachStudent->year->year];
+  //     array_push($array,$vars);
+  //   }
+  //   dd($array);
+
+  //   foreach ($student as $eachStudent) {
+  //     dd($eachStudent);
+  //    }
+  //  }
+
+  //Código simple que trae estudiantes que tengan relaciones con asistencias y año.
+
+  //backupQuery
+  // SELECT s.name,ye.year FROM students AS s INNER JOIN years AS ye ON ye.`id`=s.year_id WHERE ye.id = 3 AND s.name IN (SELECT s.name FROM students AS s INNER JOIN assists as ass  ON s.id = ass.student_id) 
 }
