@@ -1,0 +1,18 @@
+//CONSIGNA
+/*
+Sistema de Loging.
+-REGISTRAR 
+    *Altas
+    *Bajas             ------>Student
+    *Modificaciones
+
+-Registrar los siguientes datos:
+    *Usuario
+    *Fecha y Hora
+    *Acción
+    *IP
+    *Navegador
+   
+Esos daos pueden ser únicamente vistos en una pantalla en la cual el usuario
+tenga rol de administrador.
+*/
