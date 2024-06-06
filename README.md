@@ -1,6 +1,6 @@
-Pasos para correr la aplicación desde cero.
+Instalación de la Aplicación Web.
 
----PASO 1---
+###PASO 1
 Instalar Laragon completo, la versión de PHP debe ser 8.1.10.
 Laragon dispone de un host local y de un un gestor de bases de datos, llamado HeidiSQL.
 Además, instalar Composer en el usuario que va a correrse la aplicación, composer debe ser instalado en la carpeta de bin->Php de Laragon.
