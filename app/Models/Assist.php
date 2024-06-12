@@ -9,13 +9,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Assist extends Model
 {
     protected $fillable = [
-      'student_id',
+      'student_dni',
       'assist_date',
       'modified_at'
     ];
   function student_assist(): BelongsTo
   {
-    return $this->belongsTo(Student::class);
+    return $this->belongsTo(Student::class, 'student_dni', 'dni_student');
   }
     use HasFactory;
 }

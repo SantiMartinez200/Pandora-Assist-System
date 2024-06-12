@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Assist;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Param;
@@ -12,11 +13,7 @@ class DashboardController extends Controller
 {
   public static function getStudentsAssists()
   {
-    $distinctStudentsAssists = DB::table('assists')
-      ->join('students', 'assists.student_id', '=', 'students.id')
-      ->select(DB::raw('count(*) as assist_count, students.id,students.name,students.last_name,students.dni_student'))
-      ->groupBy('students.id')
-      ->get();
+    $distinctStudentsAssists = Student::whereHas('assists')->withCount('assists')->get();  
     return $distinctStudentsAssists;
   }
 
@@ -34,7 +31,7 @@ class DashboardController extends Controller
     $countAuditors = 0;
     $array = [];
     for ($i = 0; $i < count($distinctStudentsAssists); $i++) {
-      $calculate = ($distinctStudentsAssists[$i]->assist_count) / ($params[0]->total_classes) * 100;
+      $calculate = ($distinctStudentsAssists[$i]->assists_count) / ($params[0]->total_classes) * 100;
       if (($calculate >= $params[0]->regular) && ($calculate < $params[0]->promote)) {
         $countRegulars = $countRegulars + 1;
       }elseif($calculate >= $params[0]->promote){
@@ -52,11 +49,7 @@ class DashboardController extends Controller
   }
   public static function countAllAssists()
   {
-    $allAssists = DB::table('assists')
-      ->join('students', 'assists.student_id', '=', 'students.id')
-      ->select(DB::raw('students.id,students.name,students.last_name,students.dni_student'))
-      ->get()
-      ->count();
+    $allAssists = Assist::all()->count();
     return $allAssists;
   }
   public static function birthdays()

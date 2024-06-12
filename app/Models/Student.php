@@ -21,7 +21,7 @@ class Student extends Model
   ];
   function assists():HasMany
   {
-    return $this->hasMany(Assist::class);
+    return $this->hasMany(Assist::class, 'student_dni', 'dni_student');
   }
   function year(): BelongsTo{
     return $this->belongsTo(Year::class);

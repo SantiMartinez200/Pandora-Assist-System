@@ -54,46 +54,46 @@
     @endif
       <div class="container">
         @if (isset($student))
-      @if(($student->isEmpty()) != true)
-      <table class="table table-striped table-bordered">
-      <thead>
-      <tr>
-        <th scope="col"><strong>ID</strong></th>
+        @if(($student->isEmpty()) != true)
+        <table class="table table-striped table-bordered">
+        <thead>
+        <tr>
+        <th scope="col"><strong>DNI</strong></th>
         <th scope="col"><strong>Nombre</strong></th>
         <th scope="col"><strong>Apellido</strong></th>
         <th scope="col"><strong>Año</strong></th>
         <th scope="col"><strong>Acción</strong></th>
-      </tr>
-      </thead>
-      <tbody>
-      <td>{{$student[0]->id}}</td>
-      <td>{{$student[0]->name}}</td>
-      <td>{{$student[0]->last_name}}</td>
-      <td>{{$student[0]->year->year}}</td>
-      @if($bool == true)
+        </tr>
+        </thead>
+        <tbody>
+        <td>{{$student[0]->dni_student}}</td>
+        <td>{{$student[0]->name}}</td>
+        <td>{{$student[0]->last_name}}</td>
+        <td>{{$student[0]->year->year}}</td>
+        @if($bool == true)
       <td>
-      <a href="{{route("storeFromButton", $student[0]->id)}}" class="btn btn-success btn-sm m-1"><i
+      <a href="{{route("storeFromButton", $student[0]->dni_student)}}" class="btn btn-success btn-sm m-1"><i
       class="bi bi-pencil-square">Asistir!</i></a>
       <a href="{{route("StudentAssist", $student[0]->id)}}" class="btn btn-primary btn-sm m-1"><i
       class="bi bi-eye">Ver
       Asistencias!</i></a>
       </td>
     @elseif($bool == false)
-      <td>
-      <button disabled class="btn btn-success btn-sm m-1"><i class="bi bi-pencil-square">Asistir!</i></button>
-      <a href="{{route("StudentAssist", $student[0]->id)}}" class="btn btn-primary btn-sm m-1"><i
-      class="bi bi-eye">Ver
-      Asistencias!</i></a>
-      </td>
-    @endif
+        <td>
+        <button disabled class="btn btn-success btn-sm m-1"><i class="bi bi-pencil-square">Asistir!</i></button>
+        <a href="{{route("StudentAssist", $student[0]->id)}}" class="btn btn-primary btn-sm m-1"><i
+        class="bi bi-eye">Ver
+        Asistencias!</i></a>
+        </td>
+        @endif
 
-      </tbody>
-      </table>
-    @else
-      <div class="alert alert-danger mt-2" role="alert">
-      No se ha encontrado el estudiante
-      </div>
-    @endif
+        </tbody>
+        </table>
+      @else
+        <div class="alert alert-danger mt-2" role="alert">
+        No se ha encontrado el estudiante
+        </div>
+      @endif
     @endif
       </div>
     </div>
@@ -158,7 +158,7 @@
         <td>{{ $student[0]["year"]->year}}</td>
         <td>
         @if($student[2] == true)
-      <a href="{{route("storeFromButton", $student[0]["id"])}}" class="btn btn-success btn-sm m-1"><i
+      <a href="{{route("storeFromButton", $student[0]["dni_student"])}}" class="btn btn-success btn-sm m-1"><i
         class="bi bi-pencil-square">Asistir!</i>
     @elseif($student[2] == false)
     <button disabled class="btn btn-success btn-sm m-1"><i

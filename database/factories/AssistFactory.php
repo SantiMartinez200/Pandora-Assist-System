@@ -17,9 +17,9 @@ class AssistFactory extends Factory
      */
     public function definition(): array
     {
-    $studentId = Student::inRandomOrder()->first()->id;
+    $studentDni = Student::inRandomOrder()->first()->dni_student;
     return [
-      'student_id' => $studentId,
+      'student_dni' => $studentDni,
       'created_at' => now(),
       'updated_at' => now(),
     ];

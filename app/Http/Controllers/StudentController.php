@@ -6,21 +6,17 @@ use App\Models\Student;
 use App\Models\Param;
 use App\Models\Year;
 use App\Models\Assist;
-use App\Models\Loging;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\StoreStudentRequest;
 use App\Http\Requests\UpdateStudentRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
-use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
-use Mockery\Undefined;
 
 class StudentController extends Controller
 {
-
+  //Ir a la vista de listado de estudiantes.
   public function index(): View
   {
     return view('students.index', [
@@ -28,18 +24,14 @@ class StudentController extends Controller
     ]);
   }
 
-  /**
-   * Show the form for creating a new resource.
-   */
+  //Ir a la vista de crear estudiante, con los años permitidos para el registro.
   public function create(): View
   {
     $years = Year::all();
     return view('students.create', compact('years'));
   }
 
-  /**
-   * Store a newly created resource in storage.
-   */
+  //Guardar el estudiante en la base de datos.
   public function store(StoreStudentRequest $request): RedirectResponse
   {
     $val = $request->birthday;
@@ -58,23 +50,14 @@ class StudentController extends Controller
         ->withSuccess('Se ha añadido un nuevo estudiante correctamente.');
     }
   }
-
-  /**
-   * Display the specified resource.
-   */
+  //Obtener parámetros y calcular la condición del estudiante en la Vista Show.
   public function show(Student $student): View
   {
-    $getAllAssists = DB::table('assists')
-      ->join('students', 'assists.student_id', '=', 'students.id')
-      ->select(DB::raw('count(*) as assist_count'))
-      ->where('students.dni_student', 'LIKE', $student->dni_student)
-      ->get();
-    $val = $getAllAssists[0]->assist_count;
-    //get params and calculate student status
+    $getThisStudentAssists = Assist::where('student_dni', '=', $student->dni_student)->count();
     $params = Param::all();
-    $calculate = ($val) / ($params[0]->total_classes) * 100;
+    $calculate = round(($getThisStudentAssists) / ($params[0]->total_classes) * 100,2);
     $status = 'undefined';
-    if ($val > 0) {
+    if ($getThisStudentAssists > 0) {
       if ($calculate >= $params[0]->promote) {
         $status = "Promoción";
       } elseif (($calculate < $params[0]->promote) && ($calculate >= $params[0]->regular)) {
@@ -87,15 +70,13 @@ class StudentController extends Controller
     }
     return view('students.show', [
       'student' => $student,
-      'assist' => $val,
+      'assist' => $getThisStudentAssists,
       'status' => $status,
       'average' => $calculate
     ]);
   }
 
-  /**
-   * Show the form for editing the specified resource.
-   */
+ //Ir a la vista de editar estudiante, con los años permitidos para la edicion.
   public function edit(Student $student): View
   {
     $studentYear = $student->year;
@@ -107,14 +88,11 @@ class StudentController extends Controller
     ]);
   }
 
-  /**
-   * Update the specified resource in storage.
-   */
+ //Actualizar el estudiante en la base de datos.
   public function update(UpdateStudentRequest $request, Student $student): RedirectResponse
   {
     $val = $request->birthday;
     $onlyYear = date('Y', strtotime($val));
-    //$thisYear = Carbon::now()->format('Y');
     $thisYear = date('Y');
     if (($thisYear - $onlyYear) < 17) {
       $action = "update_failed";
@@ -128,12 +106,8 @@ class StudentController extends Controller
       return redirect()->back()
         ->withSuccess('El estudiante se actualizó correctamente.');
     }
-
   }
-
-  /**
-   * Remove the specified resource from storage.
-   */
+  //Eliminar el estudiante de la base de datos.
   public function destroy(Student $student): RedirectResponse
   {
     $deleteAssists = DB::table('assists')
@@ -142,18 +116,17 @@ class StudentController extends Controller
     $student->delete();
     $action = "delete_success";
     LogingController::logIngUserModule($action);
-
     return redirect()->route('students.index')
       ->withSuccess('El estudiante se eliminó correctamente.');
   }
-
+//Mostrar la cantidad de asistencias del estudiante y llevar el listado de asistencias.
   public function find($id)
   {
     $student = Student::find($id);
     $cant = $student->assists;
     return view('students.assists', compact('cant', 'student'));
   }
-
+//Buscar el estudiante por DNI y llevarlo a la vista de registro de asistencias, .
   public function findThis(Request $request)
   {
     $years = YearController::returnToSignSecondLap();
@@ -166,7 +139,7 @@ class StudentController extends Controller
       return view('students.sign', compact('student','years','bool'));
     }
   }
-
+//Obtener los estudiantes por año y llevarlos a la vista de registro de asistencias.
   public function getStudentsPerYear(request $request)
   {
     $selectedYear = Year::find($request);
@@ -181,7 +154,6 @@ class StudentController extends Controller
       $i++;
       $years[$i] = ["id" => $year->id, "year" => $year->year];
     }
-
     $students = Student::all();
     $getStudentsWithYear = [];
     foreach ($students as $eachStudent) {
@@ -190,20 +162,12 @@ class StudentController extends Controller
         array_push($getStudentsWithYear, [$eachStudent, $addYear]);
       }
     }
-
-    $todayDate = Carbon::now()->toDateString();
-    ;
+    $todayDate = Carbon::now()->toDateString();;
     $todayDate = $todayDate . "%";
     $condition = false;
-
     $getStudentsPerYear = [];
-
     foreach ($getStudentsWithYear as $eachStudent) {
-      $studentDate = DB::table('assists')
-        ->select()
-        ->where('student_id', '=', $eachStudent[0]["id"])
-        ->where('created_at', 'LIKE', $todayDate)
-        ->get();
+      $studentDate = Assist::where('student_dni', '=', $eachStudent[0]["dni_student"])->where('created_at', 'LIKE', $todayDate)->get();
       if ($studentDate->IsEmpty()) {
         $condition = true; //Cargar asistencia.
         array_push($eachStudent, $condition);
@@ -220,7 +184,6 @@ class StudentController extends Controller
       'selectedYear' => $selectedYear
     ]);
   }
-
   //  public function test($id){
   //   $all = Student::all();
   //   $idStudent = [];

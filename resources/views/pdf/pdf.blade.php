@@ -53,6 +53,7 @@
     font-weight: bold;
     color: #1B85B8;
   }
+
   .big {
     font-size: 1rem;
   }
@@ -64,15 +65,11 @@
     <h6>Ciclo lectivo {{date('Y')}}</h6>
     <?php
 if (!empty($students)) {
-  if (isset($multiple)) {
-        ?>
-    <h6>Todos los años incluidos.</h6>
-    <?php
-  } else {
        ?>
-    <h6>Curso: <strong class="big">{{$students[0]["year"]}}</strong></h6>
+    <h6>Curso: <strong class="big"><?php  if ($selectedYear) {
+    echo ($selectedYear->year);
+  } ?></strong></h6>
     <?php
-  }
 }
     ?>
     <table class="content-table">
@@ -81,9 +78,6 @@ if (!empty($students)) {
           <th>DNI</th>
           <th>Nombre</th>
           <th>Apellido</th>
-          @if(isset($multiple))
-      <th>Año</th>
-    @endif
           <th>Cantidad de Asistencias</th>
           <th>Condición</th>
         </tr>
@@ -91,21 +85,21 @@ if (!empty($students)) {
       <tbody>
         @forelse ($students as $student)
       <tr>
-      <td data-column="dni">{{ $student["dni_student"] }}</td>
-      <td data-column="Nombre"> {{ $student["name"] }}</td>
-      <td data-column="Apellido">{{ $student["last_name"] }}</td>
-      @if(isset($multiple))
-    <td data-column="Año">{{ $student["year"] }}</td>
-  @endif
-      <td data-column="Cantidad de Asistencias">{{ $student["assist_count"]}}</td>
-      <td data-column="Condicion">{{ $student["status"] }}</td>
-      </tr>
+        @if($selectedYear->id == $student["year_id"])
+        <td data-column="dni">{{ $student["dni_student"] }}</td>
+        <td data-column="Nombre"> {{ $student["name"] }}</td>
+        <td data-column="Apellido">{{ $student["last_name"] }}</td>
+        <td data-column="Cantidad de Asistencias">{{ $student["assists_count"]}}</td>
+        <td data-column="Condicion">{{ $student[0]["status"] }}</td>
+        </tr>
+      @endif
     @empty
     <td colspan="6">
-    <span class="text-danger">
+      <span class="text-danger">
       <strong>No hay asistencias de alumnos de este año!</strong>
-    </span>
+      </span>
     </td>
+
   @endforelse
       </tbody>
     </table>

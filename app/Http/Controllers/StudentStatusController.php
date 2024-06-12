@@ -2,85 +2,61 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Param;
 class StudentStatusController extends Controller
 {
-  public static function getStudentsAssists()
+  public static function getAllAssists()
   {
-    $distinctStudentsAssists = DB::table('assists')
-      ->join('students', 'assists.student_id', '=', 'students.id')
-      ->select(DB::raw('count(*) as assist_count, students.id,students.name,students.last_name,students.dni_student'))
-      ->groupBy('students.id')
-      ->get();
-    return $distinctStudentsAssists;
+    $getAllAssists = Student::whereHas('assists')->withCount('assists')->get();
+    return $getAllAssists;
   }
-
   public static function getParams()
   {
     $params = Param::all();
     return $params;
   }
-
   public function determineRegularized()
   {
     $params = $this->getParams();
-    $distinctStudentsAssists = $this->getStudentsAssists();
+    $distinctStudentsAssists = $this->getAllAssists();
     $avgRegularized = [];
     for ($i = 0; $i < count($distinctStudentsAssists); $i++) {
-      $calculate = ($distinctStudentsAssists[$i]->assist_count) / ($params[0]->total_classes) * 100;
+      $calculate = ($distinctStudentsAssists[$i]->assists_count) / ($params[0]->total_classes) * 100;
       if (($calculate >= $params[0]->regular) && ($calculate < $params[0]->promote)) {
-        $avgRegularized[$i] = ['nombre' => $distinctStudentsAssists[$i]->name, 'apellido' => $distinctStudentsAssists[$i]->last_name, 'dni' => $distinctStudentsAssists[$i]->dni_student, 'condicion' => 'Regular', 'cantidad_de_asistencias' => $distinctStudentsAssists[$i]->assist_count];
+        $avgRegularized[$i] = $distinctStudentsAssists[$i];
       }
     }
     return $avgRegularized;
   }
-
-
   public function determinePromoted()
   {
     $params = $this->getParams();
-    $distinctStudentsAssists = $this->getStudentsAssists();
+    $distinctStudentsAssists = $this->getAllAssists();
     $avgPromoted = [];
     for ($i = 0; $i < count($distinctStudentsAssists); $i++) {
-      $calculate = ($distinctStudentsAssists[$i]->assist_count) / ($params[0]->total_classes) * 100;
+      $calculate = ($distinctStudentsAssists[$i]->assists_count) / ($params[0]->total_classes) * 100;
       if (($calculate >= $params[0]->promote)) {
-        $avgPromoted[$i] = ['nombre' => $distinctStudentsAssists[$i]->name, 'apellido' => $distinctStudentsAssists[$i]->last_name, 'dni' => $distinctStudentsAssists[$i]->dni_student, 'condicion' => 'Promocion', 'cantidad_de_asistencias' => $distinctStudentsAssists[$i]->assist_count];
+        $avgPromoted[$i] = $distinctStudentsAssists[$i];
       }
     }
     return $avgPromoted;
   }
-
-
   public function determineAuditor()
   {
 
     $params = $this->getParams();
-    $distinctStudentsAssists = $this->getStudentsAssists();
+    $distinctStudentsAssists = $this->getAllAssists();
     $avgAuditor = [];
     for ($i = 0; $i < count($distinctStudentsAssists); $i++) {
-      $calculate = ($distinctStudentsAssists[$i]->assist_count) / ($params[0]->total_classes) * 100;
+      $calculate = ($distinctStudentsAssists[$i]->assists_count) / ($params[0]->total_classes) * 100;
       if (($calculate < $params[0]->regular)) {
-        $avgAuditor[$i] = ['nombre' => $distinctStudentsAssists[$i]->name, 'apellido' => $distinctStudentsAssists[$i]->last_name, 'dni' => $distinctStudentsAssists[$i]->dni_student, 'condicion' => 'Libre', 'cantidad_de_asistencias' => $distinctStudentsAssists[$i]->assist_count];
+        $avgAuditor[$i] = $distinctStudentsAssists[$i];
       }
     }
     return $avgAuditor;
-  }
-
-  public static function getAllAssists()
-  {
-    $getAllAssists = DB::table('assists')
-      ->join('students', 'assists.student_id', '=', 'students.id')
-      ->join('years', 'students.year_id', '=', 'years.id')
-      ->select(DB::raw('count(*) as assist_count, students.id,students.name,students.last_name,students.dni_student,assists.id,assists.created_at,students.group_student,years.year'))
-      ->groupBy('assists.id')
-      ->get()->toArray();
-    $assistsArray = [];
-    for ($i = 0; $i < count($getAllAssists); $i++) {
-      $assistsArray[$i] = ['id' => $getAllAssists[$i]->id, 'nombre' => $getAllAssists[$i]->name, 'apellido' => $getAllAssists[$i]->last_name, 'dni' => $getAllAssists[$i]->dni_student, 'registrada' => $getAllAssists[$i]->created_at, 'grupo' => $getAllAssists[$i]->group_student, 'año' => $getAllAssists[$i]->year];
-    }
-    return $assistsArray;
   }
   public function compactPromoted()
   {

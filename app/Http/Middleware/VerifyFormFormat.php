@@ -27,12 +27,12 @@ class VerifyFormFormat
     } else {
       if ($request->formFormat == "pdf") {
         return redirect()->action(
-          [PdfController::class, 'pdfAssistGeneral'],
+          [PdfController::class, 'pdfAssist'],
           ['request' => $request->selectedYear]
         );
       } elseif ($request->formFormat == "excel") {
         return redirect()->action(
-          [ExcelController::class, 'excelAssistGeneral'],
+          [ExcelController::class, 'excelAssist'],
           ['request' => $request->selectedYear]
         );
       }

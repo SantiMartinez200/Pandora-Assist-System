@@ -60,8 +60,8 @@ Route::middleware('auth')->group(function () {
 
   Route::Get('informes', [YearController::class,'returnToReports'])->name('informes');
   Route::get('routeFormat')->middleware('routeFormat')->name('routeFormat');
-  Route::get('pdf/pdf{request}', [PdfController::class,'pdfAssistGeneral'])->name('pdfAssistGeneral');
-  Route::get('excel/excel{request}', [ExcelController::class, 'excelAssistGeneral'])->name('excelAssistGeneral');
+  Route::get('pdf/pdf{request}', [PdfController::class,'pdfAssist'])->name('pdfAssistGeneral');
+  Route::get('excel/excel{request}', [ExcelController::class, 'excelAssist'])->name('excelAssistGeneral');
 
   Route::get('logs', [LogingController::class,'getLogs'])->middleware('verifyPermission')->name('logs');
 
